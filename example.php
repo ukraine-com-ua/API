@@ -5,6 +5,6 @@ try {
 	$HostingAPI = new HostingAPI('YOUR KEY');
 	$HostingAPI->addDomain('DOMAIN NAME');
 } catch (Exception $e) {
-	// Â ñëó÷àå îøèáêè âûâåäåò ñîîáùåíèå
+	// Ğ’ ÑĞ»ÑƒÑ‡Ğ°Ğµ Ğ¾ÑˆĞ¸Ğ±ĞºĞ¸ Ğ²Ñ‹Ğ²ĞµĞ´ĞµÑ‚ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğµ
 	echo $e->getMessage();
 }
