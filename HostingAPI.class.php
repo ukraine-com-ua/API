@@ -5,13 +5,13 @@
  */
 class HostingAPI {
 	/**
-	 * Êëş÷ äîñòóïà
+	 * ĞšĞ»ÑÑ‡ Ğ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ°
 	 * @var string
 	 */
 	private $key = '';
 
 	/**
-	 * Ïîñëåäíåå ñîîáùåíèå îá óñïåøíîì âûïîëíåíèè îïåğàöèè
+	 * ĞŸĞ¾ÑĞ»ĞµĞ´Ğ½ĞµĞµ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğµ Ğ¾Ğ± ÑƒÑĞ¿ĞµÑˆĞ½Ğ¾Ğ¼ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğ¸ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ†Ğ¸Ğ¸
 	 * @var array
 	 */
 	private $success = [];
@@ -25,16 +25,16 @@ class HostingAPI {
 	}
 
 	/**
-	 * Ïîëó÷àåì ïîñëåäíåå ñîîáùåíèå ñèñòåìû îá óñïåøíîì âûïîëíåíèè îïåğàöèè
-	 * İòîò ìåòîä ìîæåò ïîòğåáîâàòüñÿ ïğè îòëàäêå
+	 * ĞŸĞ¾Ğ»ÑƒÑ‡Ğ°ĞµĞ¼ Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ½ĞµĞµ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğµ ÑĞ¸ÑÑ‚ĞµĞ¼Ñ‹ Ğ¾Ğ± ÑƒÑĞ¿ĞµÑˆĞ½Ğ¾Ğ¼ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğ¸ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ†Ğ¸Ğ¸
+	 * Ğ­Ñ‚Ğ¾Ñ‚ Ğ¼ĞµÑ‚Ğ¾Ğ´ Ğ¼Ğ¾Ğ¶ĞµÑ‚ Ğ¿Ğ¾Ñ‚Ñ€ĞµĞ±Ğ¾Ğ²Ğ°Ñ‚ÑŒÑÑ Ğ¿Ñ€Ğ¸ Ğ¾Ñ‚Ğ»Ğ°Ğ´ĞºĞµ
 	 */
 	public function getLastSuccessMessage():array {
 		return $this->success;
 	}
 
 	/**
-	 * Äîáàâëåíèå äîìåíà íà NS ñåğâåğà
-	 * @param string $domain - äîìåííîå èìÿ
+	 * Ğ”Ğ¾Ğ±Ğ°Ğ²Ğ»ĞµĞ½Ğ¸Ğµ Ğ´Ğ¾Ğ¼ĞµĞ½Ğ° Ğ½Ğ° NS ÑĞµÑ€Ğ²ĞµÑ€Ğ°
+	 * @param string $domain - Ğ´Ğ¾Ğ¼ĞµĞ½Ğ½Ğ¾Ğµ Ğ¸Ğ¼Ñ
 	 * @return array
 	 */
 	public function addDomain(string $domain):int {
@@ -43,13 +43,13 @@ class HostingAPI {
 	}
 
 	/**
-	 * Çàïğîñ íà ñåğâåğ ñ API
+	 * Ğ—Ğ°Ğ¿Ñ€Ğ¾Ñ Ğ½Ğ° ÑĞµÑ€Ğ²ĞµÑ€ Ñ API
 	 * @param string $action
 	 * @param array $post
 	 * @return mixed
 	 */
 	private function apiCall(string $action, array $post) {
-		// Îòïğàâëÿåì çàïğîñ íà ñåğâåğ õîñòèíã ïğîâàéäåğà
+		// ĞÑ‚Ğ¿Ñ€Ğ°Ğ²Ğ»ÑĞµĞ¼ Ğ·Ğ°Ğ¿Ñ€Ğ¾Ñ Ğ½Ğ° ÑĞµÑ€Ğ²ĞµÑ€ Ñ…Ğ¾ÑÑ‚Ğ¸Ğ½Ğ³ Ğ¿Ñ€Ğ¾Ğ²Ğ°Ğ¹Ğ´ĞµÑ€Ğ°
 		$ch = curl_init("https://adm.tools/".$action);
 		curl_setopt_array($ch, [
 			CURLOPT_POST => true,
@@ -61,12 +61,12 @@ class HostingAPI {
 		$json = curl_exec($ch);
 		$response = json_decode($json, true);
 
-		// Â ñëó÷àå îøèáêè âûáğàñûâàåì èñêëş÷åíèå
+		// Ğ’ ÑĞ»ÑƒÑ‡Ğ°Ğµ Ğ¾ÑˆĞ¸Ğ±ĞºĞ¸ Ğ²Ñ‹Ğ±Ñ€Ğ°ÑÑ‹Ğ²Ğ°ĞµĞ¼ Ğ¸ÑĞºĞ»ÑÑ‡ĞµĞ½Ğ¸Ğµ
 		if ($response['result'] == false) {
 			throw new Exception(implode("|", $response['messages']['error']));
 		}
 
-		// Ñîõğàíÿåì ïîñëåäíåå ñîîáùåíèå îá óñïåøíîì âûïîëíåíèè îïåğàöèè
+		// Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½ÑĞµĞ¼ Ğ¿Ğ¾ÑĞ»ĞµĞ´Ğ½ĞµĞµ ÑĞ¾Ğ¾Ğ±Ñ‰ĞµĞ½Ğ¸Ğµ Ğ¾Ğ± ÑƒÑĞ¿ĞµÑˆĞ½Ğ¾Ğ¼ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¸Ğ¸ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ†Ğ¸Ğ¸
 		$this->success = $response['messages']['success'] ?? [];
 
 		return $response;
