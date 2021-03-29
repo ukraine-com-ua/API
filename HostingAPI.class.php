@@ -51,6 +51,18 @@ class HostingAPI {
 	}
 
 	/**
+	 * Текущий баланс учётной записи
+	 * https://epp.ua/billing/balance_get
+	 *
+	 * @return float
+	 * @throws Exception
+	 */
+	public function getBalance(): float {
+		$result = $this->apiCall('billing/balance_get');
+		return isset($result['response']['balance']) ? floatval($result['response']['balance']) : 0;
+	}
+
+	/**
 	 * Получение списка доменных зон
 	 * https://epp.ua/domain/zones
 	 *
