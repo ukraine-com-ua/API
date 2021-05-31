@@ -171,7 +171,7 @@ class HostingAPI {
 	 * @return mixed
 	 * @throws Exception
 	 */
-	private function apiCall(string $action, array $post = []): array {
+	public function apiCall(string $action, array $post = []): array {
 		$action = self::fixActionPath($action);
 		
 		// Отправляем запрос на сервер хостинг провайдера
