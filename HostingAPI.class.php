@@ -1,8 +1,8 @@
 <?php
-
 /**
  * Hosting Ukraine API
  */
+
 class HostingAPI {
 	/**
 	 * Ключ доступа
@@ -171,7 +171,7 @@ class HostingAPI {
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public function apiCall(string $action, array $post = []): array {
+	public function apiCall(string $action, array $post = []): ?array {
 		$action = self::fixActionPath($action);
 		
 		// Отправляем запрос на сервер хостинг провайдера
@@ -199,7 +199,7 @@ class HostingAPI {
 	 * @throws Exception
 	 */
 	private static function fixActionPath(string $action): string {
-		$action = preg_replace('/^https?:\/\/(www)?adm.tools\/action/', '', $action);
+		$action = preg_replace('/^(https?:\/\/(www)?adm\.tools)?\/action/', '', $action);
 		$action = trim($action, '/');
 
 		if (empty($action)) {
