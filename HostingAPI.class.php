@@ -175,7 +175,7 @@ class HostingAPI {
 		$action = self::fixActionPath($action);
 		
 		// Отправляем запрос на сервер хостинг провайдера
-		$ch = curl_init("http://adm.tools/action/{$action}/");
+		$ch = curl_init("https://adm.tools/action/{$action}/");
 		curl_setopt_array($ch, [
 			CURLOPT_POST => true,
 			CURLOPT_RETURNTRANSFER => true,
