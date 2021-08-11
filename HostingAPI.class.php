@@ -1,8 +1,8 @@
 <?php
+
 /**
  * Hosting Ukraine API
  */
-
 class HostingAPI {
 	/**
 	 * Ключ доступа
@@ -175,13 +175,14 @@ class HostingAPI {
 		$action = self::fixActionPath($action);
 		
 		// Отправляем запрос на сервер хостинг провайдера
-		$ch = curl_init("https://adm.tools/action/{$action}/");
+		$ch = curl_init("http://adm.tools/action/{$action}/");
 		curl_setopt_array($ch, [
 			CURLOPT_POST => true,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_HTTPHEADER => ["Authorization: Bearer {$this->auth_token}"],
 			CURLOPT_POSTFIELDS => http_build_query($post),
-			CURLOPT_VERBOSE => true
+			CURLOPT_NOPROGRESS => true,
+			CURLOPT_VERBOSE => false
 		]);
 		$json = curl_exec($ch);
 		$response = @json_decode($json, true);
