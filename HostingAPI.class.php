@@ -1,8 +1,8 @@
 <?php
-
 /**
  * Hosting Ukraine API
  */
+
 class HostingAPI {
 	/**
 	 * Ключ доступа
@@ -117,18 +117,18 @@ class HostingAPI {
 
 	/**
 	 * Добавляет запись на DNS сервере
-	 * https://epp.ua/dns/records_add
+	 * https://epp.ua/dns/record_add
 	 *
 	 * @param int $domain_id - идентификатор домена из getDomains()
 	 * @param string $type - A, AAAA, ALIAS, CAA, CNAME, MX, NS, TXT
 	 * @param string $record - наименование субдомена: www, @, mail ... для внесения записей в основной домен указывается @
-	 * @param string $data - IP адрес, доменное имя или текстовая запись
+	 * @param string $data - IP-адрес, доменное имя или текстовая запись
 	 * @param int $priority - приоритет, для MX записи
 	 * @return bool
 	 * @throws Exception
 	 */
 	public function addDNS(int $domain_id, string $type, string $record, string $data, int $priority = 0): bool {
-		$this->apiCall('dns/records_add', [
+		$this->apiCall('dns/record_add', [
 			'domain_id' => $domain_id,
 			'type' => strtoupper($type),
 			'record' => $record,
