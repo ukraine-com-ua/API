@@ -6,21 +6,16 @@
 class HostingAPI {
 	/**
 	 * Ключ доступа
-	 * @var string
 	 */
 	private $auth_token = '';
 
 	/**
 	 * Результат работы API запроса
-	 *
-	 * @return bool
 	 */
 	public $result = true;
 
 	/**
 	 * HostingAPI constructor.
-	 *
-	 * @param string $auth_token
 	 */
 	public function __construct(string $auth_token) {
 		$this->auth_token = $auth_token;
@@ -29,11 +24,6 @@ class HostingAPI {
 	/**
 	 * Получение ID записи по её значению
 	 * https://epp.ua/get_id
-	 *
-	 * @param string $object_type
-	 * @param string $object_name
-	 * @return int
-	 * @throws Exception
 	 */
 	public function getObjectId(string $object_type, string $object_name): ?int {
 		$result = $this->apiCall('get_id', [
@@ -53,34 +43,24 @@ class HostingAPI {
 	/**
 	 * Текущий баланс учётной записи
 	 * https://epp.ua/billing/balance_get
-	 *
-	 * @return float
-	 * @throws Exception
 	 */
 	public function getBalance(): float {
 		$result = $this->apiCall('billing/balance_get');
-		return isset($result['response']['balance']) ? floatval($result['response']['balance']) : 0;
+		return (float)$result['response']['balance'] ?? 0;
 	}
 
 	/**
 	 * Получение списка доменных зон
 	 * https://epp.ua/domain/zones
-	 *
-	 * @return array
-	 * @throws Exception
 	 */
 	public function getZones(): array {
 		$result = $this->apiCall('domain/zones');
-		return isset($result['response']['list']) ? $result['response']['list'] : [];
+		return $result['response']['list'] ?? [];
 	}
 
 	/**
 	 * Проверка доступности домена
 	 * https://epp.ua/domain/check
-	 *
-	 * @param string $domain
-	 * @return array
-	 * @throws Exception
 	 */
 	public function checkDomain(string $domain): array {
 		$result = $this->apiCall('domain/check', ['domain' => $domain]);
@@ -92,10 +72,6 @@ class HostingAPI {
 	/**
 	 * Добавление домена на NS сервера
 	 * https://epp.ua/dns/add_foreign_domain
-	 *
-	 * @param string $domain - доменное имя
-	 * @return int
-	 * @throws Exception
 	 */
 	public function addDomain(string $domain): int {
 		$result = $this->apiCall('dns/add_foreign_domain', ['domain_name' => $domain]);
@@ -107,8 +83,6 @@ class HostingAPI {
 	 * https://epp.ua/dns/records_list
 	 *
 	 * @param int $domain_id - id домена из getDomains()
-	 * @return array
-	 * @throws Exception
 	 */
 	public function getDNS(int $domain_id): array {
 		$result = $this->apiCall('dns/records_list', ['domain_id' => $domain_id]);
@@ -124,8 +98,6 @@ class HostingAPI {
 	 * @param string $record - наименование субдомена: www, @, mail ... для внесения записей в основной домен указывается @
 	 * @param string $data - IP-адрес, доменное имя или текстовая запись
 	 * @param int $priority - приоритет, для MX записи
-	 * @return bool
-	 * @throws Exception
 	 */
 	public function addDNS(int $domain_id, string $type, string $record, string $data, int $priority = 0): bool {
 		$this->apiCall('dns/record_add', [
@@ -143,8 +115,6 @@ class HostingAPI {
 	 * https://epp.ua/dns/record_delete
 	 *
 	 * @param int $subdomain_id - значение берем из getDNS()['id']
-	 * @return bool
-	 * @throws Exception
 	 */
 	public function deleteDNS(int $subdomain_id): bool {
 		$this->apiCall('dns/record_delete', ['subdomain_id' => $subdomain_id]);
@@ -154,9 +124,6 @@ class HostingAPI {
 	/**
 	 * Список доменов учетной записи
 	 * https://epp.ua/dns/list
-	 *
-	 * @return array
-	 * @throws Exception
 	 */
 	public function getDomains(): array {
 		$result = $this->apiCall('dns/list', []);
@@ -165,17 +132,12 @@ class HostingAPI {
 
 	/**
 	 * Запрос на сервер с API
-	 *
-	 * @param string $action
-	 * @param array $post
-	 * @return mixed
-	 * @throws Exception
 	 */
-	public function apiCall(string $action, array $post = []): ?array {
+	public function apiCall(string $action, array $post = [], array $get = []): ?array {
 		$action = self::fixActionPath($action);
 		
 		// Отправляем запрос на сервер хостинг провайдера
-		$ch = curl_init("https://adm.tools/action/{$action}/");
+		$ch = curl_init("https://adm.tools/action/{$action}/?".http_build_query($get));
 		curl_setopt_array($ch, [
 			CURLOPT_POST => true,
 			CURLOPT_RETURNTRANSFER => true,
@@ -185,19 +147,20 @@ class HostingAPI {
 			CURLOPT_VERBOSE => false
 		]);
 		$json = curl_exec($ch);
-		$response = @json_decode($json, true);
+		try {
+			$response = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
-		$this->result = isset($response['result']) && $response['result'];
+			$this->result = isset($response['result']) && $response['result'];
+		} catch (Exception $e) {
+			$this->result = false;
+			return null;
+		}
 
 		return $response;
 	}
 
 	/**
 	 * Преобразование пути обработчика к стандартному виду
-	 *
-	 * @param string $action
-	 * @return string
-	 * @throws Exception
 	 */
 	private static function fixActionPath(string $action): string {
 		$action = preg_replace('/^(https?:\/\/(www)?adm\.tools)?\/action/', '', $action);
